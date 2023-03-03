@@ -50,7 +50,8 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics graphics = renderSurface.getGraphics();
 
-        graphics.clearRect(0, 0, this.getWidth(), this.getHeight());
+        graphics.setColor(Color.BLACK);
+        graphics.fillRect(0, 0, this.getWidth(), this.getHeight());
         blockPanel.render(graphics);
 
         getGraphics().drawImage(renderSurface, 0, 0, null);
