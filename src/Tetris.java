@@ -18,6 +18,8 @@ public class Tetris extends JFrame implements WindowListener {
         addWindowListener(this);
         
         gamePanel = new GamePanel();
+        addKeyListener(gamePanel);
+
         Container cp = getContentPane();
         cp.add(gamePanel, "Center");
 

@@ -1,12 +1,9 @@
-import java.awt.Color;
 import java.awt.Graphics;
-
-import javax.swing.*;
 
 /**
  * 22 x 12
  */
-public class BlockPanel extends JPanel {
+public class BlockPanel {
 
     public static final int PANEL_WIDTH = 12;
     public static final int PANEL_HEIGHT = 22;
@@ -16,8 +13,6 @@ public class BlockPanel extends JPanel {
     private Block currentBlock;
     
     public BlockPanel() {
-        super();
-
         initialize();
     }
 
@@ -48,6 +43,24 @@ public class BlockPanel extends JPanel {
         blocks[y][x] = new Block(color, x, y, type);
     }
 
+    public void moveBlock(int deltaX, int deltaY) {
+        if (currentBlock == null) {
+            return;
+        }
+
+        int newX = currentBlock.getX() + deltaX;
+        int newY = currentBlock.getY() + deltaY;
+
+        if ((newX < 0 || newX >= PANEL_WIDTH) || (newY < 0 || newY >= PANEL_HEIGHT)) {
+            return; // silently ignore move if out of bounds
+        } else if (blocks[newY][newX] != null) {
+            return; // silently ignore move if it would collide with another block
+        }
+
+        currentBlock.setX(newX);
+        currentBlock.setY(newY);
+    }
+
     public void render(Graphics g) {
         for (int y = 0; y < PANEL_HEIGHT; y++) {
             for (int x = 0; x < PANEL_WIDTH; x++) {
@@ -68,9 +81,27 @@ public class BlockPanel extends JPanel {
             currentBlock.setIsMoving(true);
         } else {
             int newY = currentBlock.getY() + 1;
+
+            // make current block immovable if it vertically collides with another block
             if (blocks[newY][currentBlock.getX()] != null) {
                 blocks[currentBlock.getY()][currentBlock.getX()] = currentBlock;
                 currentBlock = null;
+
+                // test for complete row
+                boolean rowIsComplete = true;
+                for (int x = 1; x < PANEL_WIDTH - 1; x++) {
+                    if (blocks[newY - 1][x] == null) {
+                        rowIsComplete = false;
+                        break;
+                    }
+                }
+
+                // if we have a complete row, delete row and increase score
+                if (rowIsComplete) {
+                    for (int x = 1; x < PANEL_WIDTH - 2; x++) {
+                        blocks[newY - 1][x] = null;
+                    }
+                }
             } else {
                 currentBlock.setY(newY);
             }
