@@ -10,7 +10,7 @@ public class BlockPanel {
 
     private Block[][] blocks;
 
-    private Block currentBlock;
+    private CompoundBlock currentBlock;
     
     public BlockPanel() {
         initialize();
@@ -41,6 +41,14 @@ public class BlockPanel {
 
         // TODO: what happens if block already exists?
         blocks[y][x] = new Block(color, x, y, type);
+    }
+
+    public void turnBlockLeft() {
+
+    }
+
+    public void turnBlockRight() {
+
     }
 
     public void moveBlock(int deltaX, int deltaY) {
@@ -77,8 +85,7 @@ public class BlockPanel {
 
     public void update() {
         if (currentBlock == null) {
-            currentBlock = new Block(Block.Color.random(), 4, 1, Block.Type.Solid);
-            currentBlock.setIsMoving(true);
+            currentBlock = new CompoundBlock(Block.Color.random(), 4, 1, Block.Type.Solid, CompoundBlock.Form.random());
         } else {
             int newY = currentBlock.getY() + 1;
 

@@ -60,7 +60,7 @@ public class Block implements Drawable {
 
     private boolean moving;
 
-    private Color color;
+    protected Color color;
     private int x, y;
 
     private Type type;
@@ -93,11 +93,7 @@ public class Block implements Drawable {
     }
 
     public boolean isMoving() {
-        return moving;
-    }
-
-    public void setIsMoving(boolean moving) {
-        this.moving = moving;
+        return false;
     }
 
     public Type getType() {

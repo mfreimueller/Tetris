@@ -13,7 +13,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private Thread gameThread;
 
     // key states
-    private boolean moveLeft, moveRight, moveDown;
+    private boolean moveLeft, moveRight, moveDown, turnLeft, turnRight;
     
     public GamePanel() {
         super(false);
@@ -48,11 +48,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            moveLeft = true;
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            moveRight = true;
-        }
+
     }
 
     @Override
@@ -63,8 +59,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             moveRight = true;
         }
 
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             moveDown = true;
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+            turnLeft = true;
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            turnRight = true;
         }
     }
 
@@ -95,9 +97,19 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         } else if (moveRight) {
             blockPanel.moveBlock(1, 0);
             moveRight = false;
-        } else if (moveDown) {
+        }
+        
+        if (moveDown) {
             blockPanel.moveBlock(0, 1);
             moveDown = false;
+        }
+        
+        if (turnLeft) {
+            blockPanel.turnBlockLeft();
+            turnLeft = false;
+        } else if (turnRight) {
+            blockPanel.turnBlockRight();
+            turnRight = false;
         }
 
         blockPanel.update();
